@@ -1,5 +1,6 @@
-service:
-  name: serverless-todo-app
+org: tranloi2k
+app: serverless-todo-app
+service: serverless-todo-app
 
 plugins:
   - serverless-webpack
@@ -11,7 +12,7 @@ package:
 
 provider:
   name: aws
-  runtime: nodejs12.x
+  runtime: nodejs18.x
   stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'us-east-1'}
   tracing:
@@ -29,15 +30,7 @@ provider:
     # Enable API Gateway logs
     restApi: true
 
-custom:
-  topicName: todoTopic-${self:provider.stage}
 
-  documentation:
-    api:
-      info:
-        version: v1.0.0
-        title: Udacity ToDo API
-        description: Serverless application
 
 functions:
   Auth:
@@ -52,7 +45,7 @@ functions:
           cors: true
           authorizer: Auth
           request:
-            schema:
+            schemas:
               application/json: ${file(models/create-todo-request.json)}
     iamRoleStatements:
       - Effect: Allow
@@ -74,7 +67,8 @@ functions:
           method: get
           path: todos
           cors: true
-          authorizer: Auth
+          authorizer: 
+          integration: lambda-proxy
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -101,8 +95,9 @@ functions:
           path: todos/{todoId}
           authorizer: Auth
           cors: true
+          integration: lambda-proxy
           request:
-            schema:
+            schemas:
               application/json: ${file(models/update-todo-request.json)}
     iamRoleStatements:
       - Effect: Allow
@@ -171,7 +166,7 @@ resources:
       Properties:
         ResponseParameters:
           gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
-          gatewayresponse.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
           gatewayresponse.header.Access-Control-Allow-Methods: "'GET,OPTIONS,POST'"
         ResponseType: DEFAULT_4XX
         RestApiId:

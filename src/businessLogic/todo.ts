@@ -20,6 +20,7 @@ export async function createTodo(
     userId: userId,
     name: createTodoRequest.name,
     dueDate: createTodoRequest.dueDate,
+    status: createTodoRequest.status,
     done: false,
     attachmentUrl: undefined,
   } as Todo);

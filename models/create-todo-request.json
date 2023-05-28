@@ -6,12 +6,15 @@
     "name": {
       "type": "string",
       "pattern": "^(?!\\s*$).+",
-      "minLength": 3
+      "minLength": 1
     },
     "dueDate": {
       "type": "string"
+    },
+    "status": {
+      "type": "string"
     }
   },
-  "required": ["name", "dueDate"],
+  "required": ["name", "dueDate", "status"],
   "additionalProperties": false
 }

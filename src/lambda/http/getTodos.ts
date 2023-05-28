@@ -19,11 +19,18 @@ export const handler = middy(
     if (result.count !== 0)
       return {
         statusCode: 200,
+        headers: {
+          'Content-Type': 'application/json',
+          "Access-Control-Allow-Headers" : "Content-Type",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "*"
+        },
         body: JSON.stringify({ items: result.Items }),
       };
 
     return {
       statusCode: 404,
+
       body: JSON.stringify({
         error: "Item not found",
       }),
